@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>حاسبة العمر - ظلان</title>
+    <style>
+      body {
+        background: #0d0d0d;
+        color: white;
+        font-family: "Tajawal", sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+
+      h1 {
+        color: #00ffcc;
+        margin-bottom: 30px;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        font-size: 18px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+      }
+
+      input {
+        width: 200px;
+      }
+
+      button {
+        background-color: #00ffcc;
+        color: black;
+        cursor: pointer;
+      }
+
+      .result {
+        margin-top: 20px;
+        font-size: 20px;
+        line-height: 2;
+      }
+
+      .footer {
+        margin-top: 50px;
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      .link-btn {
+        margin-top: 20px;
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 6px;
+      }
+
+      .link-btn:hover {
+        background-color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>حاسبة العمر</h1>
+
+    <p>أدخل تاريخ ميلادك:</p>
+    <input type="date" id="birthdate" />
+    <br />
+    <button onclick="calculateAge()">احسب عمري</button>
+
+    <div class="result" id="result"></div>
+
+    <a href="https://ooodo.github.io/kamelo/" class="link-btn" target="_blank"
+      >زيارة الموقع الرسمي</a
+    >
+
+    <div class="footer">جميع الحقوق محفوظة © ظلان</div>
+
+    <script>
+      function calculateAge() {
+        const input = document.getElementById("birthdate").value;
+        if (!input) {
+          document.getElementById("result").innerText =
+            "الرجاء إدخال تاريخ ميلادك.";
+          return;
+        }
+
+        const birthDate = new Date(input);
+        const today = new Date();
+
+        // حساب الفروقات
+        const diffTime = today - birthDate;
+        const ageDate = new Date(diffTime);
+        const years = ageDate.getUTCFullYear() - 1970;
+        const months = years * 12 + ageDate.getUTCMonth();
+        const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(diffTime / (1000 * 60 * 60));
+        const weeks = Math.floor(days / 7);
+
+        // حساب عيد الميلاد القادم
+        let nextBirthday = new Date(
+          today.getFullYear(),
+          birthDate.getMonth(),
+          birthDate.getDate()
+        );
+        if (nextBirthday < today) {
+          nextBirthday.setFullYear(today.getFullYear() + 1);
+        }
+        const diffToNext = nextBirthday - today;
+        const daysToNext = Math.ceil(diffToNext / (1000 * 60 * 60 * 24));
+
+        const result = `
+        <strong>عمرك:</strong><br>
+        ${years} سنة<br>
+        ${months} شهر<br>
+        ${weeks} أسبوع<br>
+        ${days} يوم<br>
+        ${hours} ساعة<br><br>
+        <strong>عيد ميلادك القادم:</strong><br>
+        بتاريخ: ${nextBirthday.toLocaleDateString("ar-EG")} <br>
+        بعد ${daysToNext} يوم
+      `;
+
+        document.getElementById("result").innerHTML = result;
+      }
+    </script>
+  </body>
+</html>
